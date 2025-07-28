@@ -87,6 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Rajout Quartier
     data["Quartier (si adresse non remplie)"] = formData.get("quartier") || "";
+// Rajout Notes
+    data["Notes (motivation)"] = formData.get("Notes") || "";
 
     
     const souhaits = formData.getAll("souhaits[]");
