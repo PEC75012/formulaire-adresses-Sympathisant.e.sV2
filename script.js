@@ -36,18 +36,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Gérer affichage de la zone "Autre"
   document.getElementById('lieu_contact').addEventListener('change', function () {
     const autreInput = document.getElementById('lieu_autre_container');
     autreInput.style.display = this.value === 'Autre' ? 'block' : 'none';
   });
 
-  // Gérer affichage du formulaire selon réponse Oui / Non
   document.getElementsByName('accepte_info').forEach(radio => {
     radio.addEventListener('change', function () {
       const suite = document.getElementById('suiteForm');
       const confirmation = document.getElementById('messageConfirmation');
       const submitBtn = document.querySelector('button[type="submit"]');
+
       if (this.value === 'Oui') {
         suite.style.display = 'block';
         confirmation.style.display = 'none';
@@ -57,12 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
         suite.style.display = 'none';
         confirmation.innerText = "Nous vous remercions de votre collaboration, à bientôt peut-être !";
         confirmation.style.display = 'block';
+        confirmation.style.color = "green"; // ajout vert pour remerciement même si refus
         submitBtn.style.display = 'none';
       }
     });
   });
 
-  // Soumission du formulaire
   document.getElementById('psForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -74,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const data = {};
 
     data["HORODATAGE"] = new Date().toLocaleString();
+
     const lieuContact = formData.get("lieu_contact");
     const lieuAutre = formData.get("lieu_autre") || "";
     data["Lieu du contact"] = lieuContact === "Autre" && lieuAutre ? lieuAutre : lieuContact || "";
@@ -85,14 +85,9 @@ document.addEventListener("DOMContentLoaded", function () {
     data["ADRESSE COMPLETE (Auto-complétion)"] = formData.get("adresse") || "";
     data["Adresse autre"] = formData.get("adresse_autre") || "";
 
-  // Rajout Quartier
-    data["Quartier (si adresse non remplie)"] = formData.get("quartier") || "";
- 
+    data["QUARTIER"] = formData.get("quartier") || "";
+    data["NOTES"] = formData.get("Notes") || "";
 
-    // Rajout Notes
-    data["Notes"] = formData.get("Notes") || "";
-
-    
     const souhaits = formData.getAll("souhaits[]");
     data["Participer à des réunions"] = souhaits.includes("Participer à des réunions") ? "Oui" : "";
     data["Faire du porte à porte"] = souhaits.includes("Faire du porte à porte") ? "Oui" : "";
@@ -121,8 +116,10 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify(data)
     }).then(() => {
       submitBtn.classList.remove('loading');
-      document.getElementById('messageConfirmation').innerText = "Nous vous remercions de votre collaboration, à très vite !";
-      document.getElementById('messageConfirmation').style.display = 'block';
+      const confirmation = document.getElementById('messageConfirmation');
+      confirmation.innerText = "Nous vous remercions de votre collaboration, à très vite !";
+      confirmation.style.display = 'block';
+      confirmation.style.color = "green"; // ✅ mise en vert du message
       form.reset();
       document.getElementById('suiteForm').style.display = 'none';
     });
