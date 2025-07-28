@@ -1,2 +1,6 @@
-// script.js complet déjà fourni plus haut...
-// À coller manuellement si besoin, ou réimporter si disponible
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("checkbox_competence").addEventListener("change", function () {
+    document.getElementById("competence_detail_container").style.display = this.checked ? "block" : "none";
+  });
+});
