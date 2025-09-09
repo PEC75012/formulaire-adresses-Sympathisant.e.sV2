@@ -48,38 +48,14 @@
 
         <input type="text" name="adresse_autre" placeholder="Complément d'adresse (optionnel)" />
 
-        <label for="quartier">QUARTIER *</label>
-        <select id="quartier" name="quartier" required>
-          <option value="">-- Choisir --</option>
-          <option value="Aligre Gare de Lyon">Aligre Gare de Lyon</option>
-          <option value="Jardin de Reuilly">Jardin de Reuilly</option>
-          <option value="Nation Picpus">Nation Picpus</option>
-          <option value="Bel-Air Nord">Bel-Air Nord</option>
-          <option value="Bel-Air Sud">Bel-Air Sud</option>
-          <option value="Vallée de Fécamp">Vallée de Fécamp</option>
-          <option value="Bercy">Bercy</option>
-        </select>
-
-        <label for="Notes">NOTES *</label>
-        <select id="Notes" name="Notes" required>
-          <option value="">-- Choisir --</option>
-          <option value="Intéressé.e">Intéressé.e</option>
-          <option value="Très intéressé.e">Très intéressé.e</option>
-          <option value="A rappeler très vite">A rappeler très vite</option>
-        </select>
-
         <fieldset>
           <legend>Je souhaite :</legend>
           <label><input type="checkbox" name="souhaits[]" value="Participer à des réunions" /> Participer à des réunions</label>
           <label><input type="checkbox" name="souhaits[]" value="Faire du porte à porte" /> Faire du porte à porte</label>
           <label><input type="checkbox" name="souhaits[]" value="Distribution documents" /> Distribution de documents</label>
           <label><input type="checkbox" name="souhaits[]" value="Boitage documents" /> Boîtage documents</label>
-          <label><input type="checkbox" name="souhaits[]" value="Apporter une compétence" id="checkbox_competence" /> Apporter une compétence</label>
+          <label><input type="checkbox" name="souhaits[]" value="Apporter une compétence" /> Apporter une compétence</label>
         </fieldset>
-
-        <div id="competence_detail_container" style="display: none;">
-          <textarea name="competence_detail" id="competence_detail" placeholder="Précisez votre compétence…" rows="2"></textarea>
-        </div>
 
         <fieldset>
           <legend>Je suis intéressé·e par :</legend>
@@ -95,7 +71,7 @@
           <label><input type="checkbox" name="interets[]" value="Paris, capitale de l’égalité et de la lutte contre toutes les discriminations" /> Paris, capitale de l’égalité et de la lutte contre toutes les discriminations</label>
         </fieldset>
 
-        <textarea name="commentaire" placeholder="Autres centres d’intérêt ou commentaires…" rows="4"></textarea>
+        <textarea name="commentaire" placeholder="Autre centres d’intérêt ou commentaires..." rows="4"></textarea>
 
         <button type="submit">Envoyer</button>
       </div>
