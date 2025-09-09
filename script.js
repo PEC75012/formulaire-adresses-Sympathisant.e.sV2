@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     data["Commentaires"] = formData.get("commentaire") || "";
 
-    fetch("https://script.google.com/macros/s/AKfycbx43B-yrUU6msTLgetlBd6Fq2TIiGCapwebjWyBRqciNk3LgWjFm23ht7YSzpjzf_rd/exec", {
+    fetch("https://script.google.com/macros/s/YOUR_SCRIPT_URL/exec", {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/json" },
