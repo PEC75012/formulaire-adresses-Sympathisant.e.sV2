@@ -2,51 +2,56 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Formulaire PS12</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <h1>Formulaire de contact sympathisant.e.s- Section PS12</h1>
+    <h1>Formulaire de contact – Section PS12</h1>
 
-    <form id="psForm">
+    <form id="psForm" novalidate>
       <fieldset>
-        <legend>Souhaitez-vous recevoir les informations de la section PS12 ? *</legend>
-        <label><input type="radio" name="accepte_info" value="Oui" required> Oui</label>
-        <label><input type="radio" name="accepte_info" value="Non"> Non</label>
+        <legend>Souhaitez-vous recevoir les informations de la section PS12 ? <span aria-hidden="true">*</span></legend>
+        <label class="inline"><input type="radio" name="accepte_info" value="Oui" required> Oui</label>
+        <label class="inline"><input type="radio" name="accepte_info" value="Non"> Non</label>
       </fieldset>
 
-      <div id="messageConfirmation" class="confirmation"></div>
+      <div id="messageConfirmation" class="confirmation" role="status" aria-live="polite"></div>
 
-      <div id="suiteForm" style="display: none;">
-        <input type="text" name="date_contact" id="date_contact" style="display:none;" />
+      <div id="suiteForm" hidden>
+        <input type="text" name="date_contact" id="date_contact" hidden />
 
-        <label for="lieu_contact">Lieu du contact *</label>
+        <label for="lieu_contact">Lieu du contact <span aria-hidden="true">*</span></label>
         <select id="lieu_contact" name="lieu_contact" required>
           <option value="">-- Choisir --</option>
-          <option value="Marché">Marché</option>
-          <option value="Métro">Métro</option>
-          <option value="École">École</option>
-          <option value="Supermarché">Supermarché</option>
-          <option value="Autre">Autre (à préciser)</option>
+          <option>Marché</option>
+          <option>Métro</option>
+          <option>École</option>
+          <option>Supermarché</option>
+          <option>Autre</option>
         </select>
 
-        <div id="lieu_autre_container" style="display:none;">
-          <input type="text" name="lieu_autre" id="lieu_autre" placeholder="Précisez le lieu..." />
+        <div id="lieu_autre_container" hidden>
+          <input type="text" name="lieu_autre" id="lieu_autre" placeholder="Précisez le lieu…" autocomplete="organization" />
         </div>
 
-        <input type="text" name="prenom" placeholder="Prénom *" required />
-        <input type="text" name="nom" placeholder="Nom *" required />
-        <input type="email" name="email" placeholder="Email *" required />
-        <input type="tel" name="telephone" placeholder="Téléphone *" required />
-
-        <div class="autocomplete-wrapper">
-          <input type="text" name="adresse" id="adresse" placeholder="Adresse complète (auto-complétion)" required />
-          <div id="suggestions" class="suggestions"></div>
+        <div class="grid-2">
+          <input type="text" name="prenom" placeholder="Prénom *" autocomplete="given-name" required />
+          <input type="text" name="nom" placeholder="Nom *" autocomplete="family-name" required />
         </div>
 
-        <input type="text" name="adresse_autre" placeholder="Complément d'adresse (optionnel)" />
+        <div class="grid-2">
+          <input type="email" name="email" placeholder="Email *" autocomplete="email" inputmode="email" required />
+          <input type="tel" name="telephone" placeholder="Téléphone *" autocomplete="tel" inputmode="tel" required />
+        </div>
+
+        <div class="autocomplete-wrapper" aria-expanded="false">
+          <input type="text" name="adresse" id="adresse" placeholder="Adresse complète (auto‑complétion) *" autocomplete="address-line1" required />
+          <div id="suggestions" class="suggestions" role="listbox"></div>
+        </div>
+
+        <input type="text" name="adresse_autre" placeholder="Complément d'adresse (optionnel)" autocomplete="address-line2" />
 
         <fieldset>
           <legend>Je souhaite :</legend>
@@ -54,11 +59,76 @@
           <label><input type="checkbox" name="souhaits[]" value="Faire du porte à porte" /> Faire du porte à porte</label>
           <label><input type="checkbox" name="souhaits[]" value="Distribution documents" /> Distribution de documents</label>
           <label><input type="checkbox" name="souhaits[]" value="Boitage documents" /> Boîtage documents</label>
-          <label><input type="checkbox" name="souhaits[]" value="Apporter une compétence" /> Apporter une compétence</label>
+          <label><input type="checkbox" id="cb_competence" name="souhaits[]" value="Apporter une compétence" /> Apporter une compétence</label>
+          <div id="competence_container" class="nested" hidden>
+            <input type="text" name="competence_texte" id="competence_texte" placeholder="Quelle compétence souhaitez‑vous apporter ? (ex: graphisme, web, juridique…)" />
+          </div>
         </fieldset>
 
         <fieldset>
-          <legend>Je suis intéressé·e par :</legend>
+          <legend>QUARTIER (cochez un ou plusieurs) :</legend>
+          <label><input type="checkbox" name="quartiers[]" value="Bel-Air" /> Bel‑Air</label>
+          <label><input type="checkbox" name="quartiers[]" value="Picpus" /> Picpus</label>
+          <label><input type="checkbox" name="quartiers[]" value="Bercy" /> Bercy</label>
+          <label><input type="checkbox" name="quartiers[]" value="Quinze-Vingts" /> Quinze‑Vingts</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>DOMAINES D’ACTIVITÉ / D’ENGAGEMENT :</legend>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-communication" name="domaines[]" value="Communication" /> Communication</label>
+            <textarea id="det-communication" class="domain-detail" name="domaines_detail_Communication" placeholder="Précisez (ex: réseaux sociaux, newsletter…)" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-porte" name="domaines[]" value="Porte-à-porte" /> Porte‑à‑porte</label>
+            <textarea id="det-porte" class="domain-detail" name="domaines_detail_Porte-à-porte" placeholder="Secteurs, disponibilité…" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-tractage" name="domaines[]" value="Tractage/boîtage" /> Tractage / boîtage</label>
+            <textarea id="det-tractage" class="domain-detail" name="domaines_detail_Tractage/boîtage" placeholder="Lieux, horaires…" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-evenements" name="domaines[]" value="Organisation d’événements" /> Organisation d’événements</label>
+            <textarea id="det-evenements" class="domain-detail" name="domaines_detail_Organisation d’événements" placeholder="Type d’événements, rôle…" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-logistique" name="domaines[]" value="Logistique" /> Logistique</label>
+            <textarea id="det-logistique" class="domain-detail" name="domaines_detail_Logistique" placeholder="Matériel, transport…" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-numerique" name="domaines[]" value="Numérique" /> Numérique</label>
+            <textarea id="det-numerique" class="domain-detail" name="domaines_detail_Numérique" placeholder="Site web, formulaire, data…" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-presse" name="domaines[]" value="Relations presse" /> Relations presse</label>
+            <textarea id="det-presse" class="domain-detail" name="domaines_detail_Relations presse" placeholder="Contacts, médias…" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-finances" name="domaines[]" value="Finances / fundraising" /> Finances / fundraising</label>
+            <textarea id="det-finances" class="domain-detail" name="domaines_detail_Finances / fundraising" placeholder="Compétences, disponibilité…" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-graphisme" name="domaines[]" value="Graphisme" /> Graphisme</label>
+            <textarea id="det-graphisme" class="domain-detail" name="domaines_detail_Graphisme" placeholder="Outils, portfolio…" hidden></textarea>
+          </div>
+
+          <div class="domain-item">
+            <label><input type="checkbox" class="cb-domaine" data-target="#det-juridique" name="domaines[]" value="Juridique" /> Juridique</label>
+            <textarea id="det-juridique" class="domain-detail" name="domaines_detail_Juridique" placeholder="Spécialité, disponibilité…" hidden></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Centres d’intérêt :</legend>
           <label><input type="checkbox" name="interets[]" value="Le logement comme garantie du droit à bien vivre à Paris" /> Le logement comme garantie du droit à bien vivre à Paris</label>
           <label><input type="checkbox" name="interets[]" value="Une école publique de qualité pour lutter contre les déterminismes sociaux" /> Une école publique de qualité pour lutter contre les déterminismes sociaux</label>
           <label><input type="checkbox" name="interets[]" value="Des services publics qui prennent soin de chacune et chacun" /> Des services publics qui prennent soin de chacune et chacun</label>
@@ -71,13 +141,13 @@
           <label><input type="checkbox" name="interets[]" value="Paris, capitale de l’égalité et de la lutte contre toutes les discriminations" /> Paris, capitale de l’égalité et de la lutte contre toutes les discriminations</label>
         </fieldset>
 
-        <textarea name="commentaire" placeholder="Autre centres d’intérêt ou commentaires..." rows="4"></textarea>
+        <textarea name="commentaire" placeholder="Autres centres d’intérêt ou commentaires…" rows="4"></textarea>
 
-        <button type="submit">Envoyer</button>
+        <button type="submit" id="submitBtn">Envoyer</button>
       </div>
     </form>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
