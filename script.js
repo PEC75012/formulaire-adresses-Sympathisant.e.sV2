@@ -1,5 +1,5 @@
 (function () {
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyPfYPyEgL1pZgtdMcWXy6dKEaXxfuP4jpryPkfambB28rg75d9E0rF8BrCCVHEx8Ce/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJ3TpsnhDDpgOXwosfnnIDp1o45J4a7l3GLHi39t8U3BfgOu5Ky8_KiBTtJ0jDb4et/exec";
 
   const $  = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
