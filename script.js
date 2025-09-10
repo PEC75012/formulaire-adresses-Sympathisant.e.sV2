@@ -1,7 +1,6 @@
 // 🧩 Renseigne l'URL de déploiement Apps Script ↓↓↓
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzbXdhebwttNBZC_a21KVP4WUGlVx-em24W5vZLI1Eub5MkZER2hGAM3Ytq4zxe8Hp5/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx5iT21pQG8BI8qKHuPAFbafy0HYA47MQzMQ_D3v648GRHfLs3uqy8cnnCoixB-F0d5/exec';
 
-// --- Google Places ---
 window.initPlaces = function initPlaces(){
   const input = document.getElementById('autocomplete');
   if (!input) return;
@@ -17,7 +16,6 @@ window.initPlaces = function initPlaces(){
   });
 };
 
-// --- UI : champs conditionnels ---
 const skillToggle = document.getElementById('skill-toggle');
 const skillWrap = document.getElementById('skill-detail-wrap');
 const skillDetail = document.getElementById('skill-detail');
@@ -32,7 +30,6 @@ skillToggle?.addEventListener('change', () => {
   }
 });
 
-// Domaines : afficher le champ libre associé quand coché
 const domainsRoot = document.getElementById('domains');
 if (domainsRoot){
   domainsRoot.querySelectorAll('input[type="checkbox"][data-free]').forEach(cb => {
@@ -44,7 +41,6 @@ if (domainsRoot){
   });
 }
 
-// --- Soumission ---
 const form = document.getElementById('contact-form');
 const statusEl = document.getElementById('status');
 const submitBtn = document.getElementById('submit-btn');
@@ -56,8 +52,6 @@ form?.addEventListener('submit', async (e) => {
 
   try {
     const fd = new FormData(form);
-
-    // Construire l’objet de données mappé aux entêtes Sheet
     const payload = {
       'Lieu du contact': fd.get('Lieu du contact')?.toString().trim() || '',
       'PRENOM': fd.get('PRENOM')?.toString().trim() || '',
@@ -70,7 +64,6 @@ form?.addEventListener('submit', async (e) => {
       'Notes': fd.get('Notes')?.toString().trim() || ''
     };
 
-    // Domaines sélectionnés + précisions entre parenthèses
     const domainChecks = Array.from(domainsRoot?.querySelectorAll('input[type="checkbox"][data-free]') || []);
     const domainValues = domainChecks
       .filter(cb => cb.checked)
@@ -79,16 +72,13 @@ form?.addEventListener('submit', async (e) => {
         const extra = free && free.value.trim() ? ` (${free.value.trim()})` : '';
         return `${cb.value}${extra}`;
       });
-    // Le serveur éclatera cela en colonnes 1/0
     payload['DOMAINES D’ACTIVITÉ / D’ENGAGEMENT'] = domainValues.join(', ');
 
-    // Apporter une compétence
     payload['Apporter une compétence'] = skillToggle?.checked ? 'oui' : 'non';
     if (skillToggle?.checked && skillDetail?.value.trim()) {
       payload['Apporter une compétence - détail'] = skillDetail.value.trim();
     }
 
-    // POST JSON → Apps Script
     const res = await fetch(WEB_APP_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

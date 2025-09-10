@@ -11,86 +11,60 @@
     <h1>Formulaire de contact</h1>
 
     <form id="contact-form" novalidate>
-      <!-- Lieu du contact -->
       <label>
         Lieu du contact
         <input type="text" name="Lieu du contact" placeholder="Ex: Marché Daumesnil" />
       </label>
 
-      <!-- Identité -->
       <div class="grid-2">
-        <label>
-          PRENOM
-          <input type="text" name="PRENOM" required />
-        </label>
-        <label>
-          NOM
-          <input type="text" name="NOM" required />
-        </label>
+        <label> PRENOM <input type="text" name="PRENOM" required /></label>
+        <label> NOM <input type="text" name="NOM" required /></label>
       </div>
 
       <div class="grid-2">
-        <label>
-          E-MAIL
-          <input type="email" name="E-MAIL" placeholder="nom@example.com" />
-        </label>
-        <label>
-          TELEPHONE
-          <input type="tel" name="TELEPHONE" placeholder="06…" />
-        </label>
+        <label> E-MAIL <input type="email" name="E-MAIL" placeholder="nom@example.com" /></label>
+        <label> TELEPHONE <input type="tel" name="TELEPHONE" placeholder="06…" /></label>
       </div>
 
-      <!-- Adresse avec Google Places -->
-      <label>
-        ADRESSE COMPLETE (Auto-complétion)
+      <label> ADRESSE COMPLETE (Auto-complétion)
         <input type="text" id="autocomplete" name="ADRESSE COMPLETE (Auto-complétion)" placeholder="Saisis ton adresse" autocomplete="off" />
       </label>
 
-      <label>
-        Adresse autre
+      <label> Adresse autre
         <input type="text" name="Adresse autre" placeholder="Complément d’adresse si besoin" />
       </label>
 
-      <!-- Quartier -->
-      <label>
-        QUARTIER
+      <label> QUARTIER
         <select name="QUARTIER">
           <option value="">— Sélectionner —</option>
-          <option>Bel-Air</option>
-          <option>Vallée de Fécamp</option>
-          <option>Picpus</option>
-          <option>Nation – Alexandre Dumas</option>
-          <option>Bercy</option>
-          <option>Quinze-Vingts</option>
+          <option value="Aligre Gare de Lyon">Aligre Gare de Lyon</option>
+          <option value="Jardin de Reuilly">Jardin de Reuilly</option>
+          <option value="Nation Picpus">Nation Picpus</option>
+          <option value="Bel-Air Nord">Bel-Air Nord</option>
+          <option value="Bel-Air Sud">Bel-Air Sud</option>
+          <option value="Vallée de Fécamp">Vallée de Fécamp</option>
+          <option value="Bercy">Bercy</option>
         </select>
       </label>
 
-      <!-- Domaines d’activité / d’engagement (multi) -->
       <fieldset>
         <legend>DOMAINES D’ACTIVITÉ / D’ENGAGEMENT</legend>
         <div class="chips" id="domains">
-          <!-- Chaque case ouvre un champ texte libre associé -->
           <label class="chip"><input type="checkbox" value="Éducation" data-free="domain_free_education" /> Éducation</label>
           <input class="free" id="domain_free_education" type="text" placeholder="Préciser (facultatif)" />
-
           <label class="chip"><input type="checkbox" value="Solidarité" data-free="domain_free_solidarite" /> Solidarité</label>
           <input class="free" id="domain_free_solidarite" type="text" placeholder="Préciser (facultatif)" />
-
           <label class="chip"><input type="checkbox" value="Environnement" data-free="domain_free_env" /> Environnement</label>
           <input class="free" id="domain_free_env" type="text" placeholder="Préciser (facultatif)" />
-
           <label class="chip"><input type="checkbox" value="Culture" data-free="domain_free_culture" /> Culture</label>
           <input class="free" id="domain_free_culture" type="text" placeholder="Préciser (facultatif)" />
-
           <label class="chip"><input type="checkbox" value="Sport" data-free="domain_free_sport" /> Sport</label>
           <input class="free" id="domain_free_sport" type="text" placeholder="Préciser (facultatif)" />
-
           <label class="chip"><input type="checkbox" value="Autre" data-free="domain_free_other" /> Autre</label>
           <input class="free" id="domain_free_other" type="text" placeholder="Préciser (facultatif)" />
         </div>
       </fieldset>
 
-      <!-- Apporter une compétence -->
       <label class="toggle">
         <input type="checkbox" id="skill-toggle" /> Apporter une compétence
       </label>
@@ -99,9 +73,7 @@
         <textarea id="skill-detail" placeholder="Décris la compétence que tu souhaites apporter"></textarea>
       </label>
 
-      <!-- Notes -->
-      <label>
-        Notes
+      <label> Notes
         <textarea name="Notes" rows="4" placeholder="Informations complémentaires…"></textarea>
       </label>
 
@@ -111,7 +83,6 @@
   </main>
 
   <script src="script.js"></script>
-  <!-- Google Places (remplacer la clé) -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATy7UvRGmzdy9YbxCPa3ssONCM7R9myMY&libraries=places&callback=initPlaces"></script>
 </body>
 </html>
