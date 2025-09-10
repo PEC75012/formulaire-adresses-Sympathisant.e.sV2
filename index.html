@@ -11,126 +11,132 @@
     <h1>Formulaire de contact – Section PS12</h1>
 
     <form id="psForm" novalidate>
-      <fieldset>
-        <legend>Souhaitez-vous recevoir les informations de la section PS12 ? <span aria-hidden="true">*</span></legend>
-        <label class="inline"><input type="radio" name="accepte_info" value="Oui" required> Oui</label>
-        <label class="inline"><input type="radio" name="accepte_info" value="Non"> Non</label>
-      </fieldset>
+      <div class="section">
+        <h2 class="section-title">SOUHAITEZ-VOUS RECEVOIR LES INFORMATIONS DE LA SECTION PS12 ?</h2>
+        <label class="stack"><input type="radio" name="accepte_info" value="Oui" required> Oui</label>
+        <label class="stack"><input type="radio" name="accepte_info" value="Non"> Non</label>
+      </div>
 
       <div id="messageConfirmation" class="confirmation" role="status" aria-live="polite"></div>
 
       <div id="suiteForm" hidden>
         <input type="text" name="date_contact" id="date_contact" hidden />
 
-        <!-- LIEU DU CONTACT -->
-        <label for="lieu_contact">Lieu du contact <span aria-hidden="true">*</span></label>
-        <select id="lieu_contact" name="lieu_contact" required>
-          <option value="">-- Choisir --</option>
-          <option value="Marché">Marché</option>
-          <option value="Métro">Métro</option>
-          <option value="École">École</option>
-          <option value="Supermarché">Supermarché</option>
-          <option value="Autre">Autre</option>
-        </select>
+        <div class="section">
+          <h2 class="section-title">LIEU DU CONTACT</h2>
+          <label for="lieu_contact" class="stack">Choisir un lieu *</label>
+          <select id="lieu_contact" name="lieu_contact" required>
+            <option value="">-- Choisir --</option>
+            <option value="Marché">Marché</option>
+            <option value="Métro">Métro</option>
+            <option value="École">École</option>
+            <option value="Supermarché">Supermarché</option>
+            <option value="Autre">Autre</option>
+          </select>
 
-        <!-- Champ de précision (affiché pour Marché/Métro/École/Supermarché/Autre) -->
-        <div id="lieu_precis_container" hidden>
-          <input type="text" name="lieu_precis" id="lieu_precis"
-                 placeholder="Précisez le marché, métro, école, supermarché… ou le lieu 'Autre'" />
+          <div id="lieu_precis_container" hidden>
+            <input type="text" name="lieu_precis" id="lieu_precis" placeholder="Précisez le lieu…"/>
+          </div>
         </div>
 
-        <div class="grid-2">
-          <input type="text" name="prenom" placeholder="Prénom *" autocomplete="given-name" required />
-          <input type="text" name="nom" placeholder="Nom *" autocomplete="family-name" required />
+        <div class="section">
+          <h2 class="section-title">VOS COORDONNÉES</h2>
+          <label class="stack">Prénom *<input type="text" name="prenom" autocomplete="given-name" required /></label>
+          <label class="stack">Nom *<input type="text" name="nom" autocomplete="family-name" required /></label>
+          <label class="stack">Email *<input type="email" name="email" autocomplete="email" inputmode="email" required /></label>
+          <label class="stack">Téléphone *<input type="tel" name="telephone" autocomplete="tel" inputmode="tel" required /></label>
         </div>
 
-        <div class="grid-2">
-          <input type="email" name="email" placeholder="Email *" autocomplete="email" inputmode="email" required />
-          <input type="tel" name="telephone" placeholder="Téléphone *" autocomplete="tel" inputmode="tel" required />
+        <div class="section">
+          <h2 class="section-title">ADRESSE</h2>
+          <label class="stack">Adresse complète (auto-complétion) *</label>
+          <div class="autocomplete-wrapper" aria-expanded="false">
+            <input type="text" name="adresse" id="adresse" placeholder="Commencez à taper…" autocomplete="address-line1" required />
+            <div id="suggestions" class="suggestions" role="listbox"></div>
+          </div>
+          <label class="stack">Complément d'adresse (optionnel)
+            <input type="text" name="adresse_autre" autocomplete="address-line2" />
+          </label>
         </div>
 
-        <!-- ADRESSE (autocomplétion via adresses.json) -->
-        <div class="autocomplete-wrapper" aria-expanded="false">
-          <input type="text" name="adresse" id="adresse" placeholder="Adresse complète (auto-complétion) *" autocomplete="address-line1" required />
-          <div id="suggestions" class="suggestions" role="listbox"></div>
-        </div>
-
-        <input type="text" name="adresse_autre" placeholder="Complément d'adresse (optionnel)" autocomplete="address-line2" />
-
-        <!-- SOUHAITS -->
-        <fieldset>
-          <legend>Je souhaite :</legend>
-          <label><input type="checkbox" name="souhaits[]" value="Participer à des réunions" /> Participer à des réunions</label>
-          <label><input type="checkbox" name="souhaits[]" value="Faire du porte à porte" /> Faire du porte à porte</label>
-          <label><input type="checkbox" name="souhaits[]" value="Distribution de documents" /> Distribution de documents</label>
-          <label><input type="checkbox" name="souhaits[]" value="Boîtage documents" /> Boîtage documents</label>
-          <label><input type="checkbox" id="cb_competence" name="souhaits[]" value="Apporter une compétence" /> Apporter une compétence</label>
+        <div class="section">
+          <h2 class="section-title">JE SOUHAITE</h2>
+          <label class="stack"><input type="checkbox" name="souhaits[]" value="Participer à des réunions" /> Participer à des réunions</label>
+          <label class="stack"><input type="checkbox" name="souhaits[]" value="Faire du porte à porte" /> Faire du porte à porte</label>
+          <label class="stack"><input type="checkbox" name="souhaits[]" value="Distribution de documents" /> Distribution de documents</label>
+          <label class="stack"><input type="checkbox" name="souhaits[]" value="Boîtage documents" /> Boîtage documents</label>
+          <label class="stack"><input type="checkbox" id="cb_competence" name="souhaits[]" value="Apporter une compétence" /> Apporter une compétence</label>
           <div id="competence_container" class="nested" hidden>
             <input type="text" name="competence_texte" id="competence_texte" placeholder="Quelle compétence souhaitez-vous apporter ?" />
           </div>
-        </fieldset>
+        </div>
 
-        <!-- QUARTIERS -->
-        <fieldset>
-          <legend>QUARTIER OÙ JE SOUHAÎTE D’INVESTIR (cochez un ou plusieurs) :</legend>
-          <label><input type="checkbox" name="quartiers[]" value="Aligre - Gare de Lyon" /> Aligre - Gare de Lyon</label>
-          <label><input type="checkbox" name="quartiers[]" value="Jardin de Reuilly" /> Jardin de Reuilly</label>
-          <label><input type="checkbox" name="quartiers[]" value="Nation – Picpus" /> Nation – Picpus</label>
-          <label><input type="checkbox" name="quartiers[]" value="Bel Air nord" /> Bel Air nord</label>
-          <label><input type="checkbox" name="quartiers[]" value="Bel-Air sud" /> Bel-Air sud</label>
-          <label><input type="checkbox" name="quartiers[]" value="Vallée de Fécamp" /> Vallée de Fécamp</label>
-          <label><input type="checkbox" name="quartiers[]" value="Bercy" /> Bercy</label>
-        </fieldset>
+        <div class="section">
+          <h2 class="section-title">QUARTIER OÙ JE SOUHAÎTE M’INVESTIR (COCHEZ UN OU PLUSIEURS)</h2>
+          <label class="stack"><input type="checkbox" name="quartiers[]" value="Aligre-Gare de Lyon" /> Aligre-Gare de Lyon</label>
+          <label class="stack"><input type="checkbox" name="quartiers[]" value="Jardin de Reuilly" /> Jardin de Reuilly</label>
+          <label class="stack"><input type="checkbox" name="quartiers[]" value="Nation-Picpus" /> Nation-Picpus</label>
+          <label class="stack"><input type="checkbox" name="quartiers[]" value="Bel Air nord" /> Bel Air nord</label>
+          <label class="stack"><input type="checkbox" name="quartiers[]" value="Bel-Air sud" /> Bel-Air sud</label>
+          <label class="stack"><input type="checkbox" name="quartiers[]" value="Vallée de Fécamp" /> Vallée de Fécamp</label>
+          <label class="stack"><input type="checkbox" name="quartiers[]" value="Bercy" /> Bercy</label>
+        </div>
 
-        <!-- DOMAINES -->
-        <fieldset>
-          <legend>DOMAINES D’ACTIVITÉ / D’ENGAGEMENT :</legend>
+        <div class="section">
+          <h2 class="section-title">DOMAINES D’ACTIVITÉ / D’ENGAGEMENT</h2>
 
-          <label><input type="checkbox" class="cb-domaine" data-target="#det-communication" name="domaines[]" value="Communication" /> Communication</label>
+          <label class="stack"><input type="checkbox" class="cb-domaine" data-target="#det-communication" name="domaines[]" value="Communication" /> Communication</label>
           <textarea id="det-communication" class="domain-detail" name="domaines_detail_Communication" placeholder="Précisez…" hidden></textarea>
 
-          <label><input type="checkbox" class="cb-domaine" data-target="#det-evenements" name="domaines[]" value="Organisation d’événements" /> Organisation d’événements</label>
+          <label class="stack"><input type="checkbox" class="cb-domaine" data-target="#det-evenements" name="domaines[]" value="Organisation d’événements" /> Organisation d’événements</label>
           <textarea id="det-evenements" class="domain-detail" name="domaines_detail_Organisation d’événements" placeholder="Précisez…" hidden></textarea>
 
-          <label><input type="checkbox" class="cb-domaine" data-target="#det-logistique" name="domaines[]" value="Logistique" /> Logistique</label>
+          <label class="stack"><input type="checkbox" class="cb-domaine" data-target="#det-logistique" name="domaines[]" value="Logistique" /> Logistique</label>
           <textarea id="det-logistique" class="domain-detail" name="domaines_detail_Logistique" placeholder="Précisez…" hidden></textarea>
 
-          <label><input type="checkbox" class="cb-domaine" data-target="#det-numerique" name="domaines[]" value="Numérique" /> Numérique</label>
+          <label class="stack"><input type="checkbox" class="cb-domaine" data-target="#det-numerique" name="domaines[]" value="Numérique" /> Numérique</label>
           <textarea id="det-numerique" class="domain-detail" name="domaines_detail_Numérique" placeholder="Précisez…" hidden></textarea>
 
-          <label><input type="checkbox" class="cb-domaine" data-target="#det-graphisme" name="domaines[]" value="Graphisme" /> Graphisme</label>
+          <label class="stack"><input type="checkbox" class="cb-domaine" data-target="#det-graphisme" name="domaines[]" value="Graphisme" /> Graphisme</label>
           <textarea id="det-graphisme" class="domain-detail" name="domaines_detail_Graphisme" placeholder="Précisez…" hidden></textarea>
 
-          <label><input type="checkbox" class="cb-domaine" data-target="#det-presse" name="domaines[]" value="Relations presse" /> Relations presse</label>
+          <label class="stack"><input type="checkbox" class="cb-domaine" data-target="#det-presse" name="domaines[]" value="Relations presse" /> Relations presse</label>
           <textarea id="det-presse" class="domain-detail" name="domaines_detail_Relations presse" placeholder="Précisez…" hidden></textarea>
 
-          <label><input type="checkbox" class="cb-domaine" data-target="#det-finances" name="domaines[]" value="Finances / fundraising" /> Finances / fundraising</label>
+          <label class="stack"><input type="checkbox" class="cb-domaine" data-target="#det-finances" name="domaines[]" value="Finances / fundraising" /> Finances / fundraising</label>
           <textarea id="det-finances" class="domain-detail" name="domaines_detail_Finances / fundraising" placeholder="Précisez…" hidden></textarea>
 
-          <label><input type="checkbox" class="cb-domaine" data-target="#det-juridique" name="domaines[]" value="Juridique" /> Juridique</label>
+          <label class="stack"><input type="checkbox" class="cb-domaine" data-target="#det-juridique" name="domaines[]" value="Juridique" /> Juridique</label>
           <textarea id="det-juridique" class="domain-detail" name="domaines_detail_Juridique" placeholder="Précisez…" hidden></textarea>
-        </fieldset>
+        </div>
 
-        <!-- INTERETS -->
-        <fieldset>
-          <legend>CENTRES D’INTERET LIES AU PROGRAMME DE « PARIS EN GRAND » :</legend>
-          <label><input type="checkbox" name="interets[]" value="Le logement comme garantie du droit à bien vivre à Paris" /> Le logement comme garantie du droit à bien vivre à Paris</label>
-          <label><input type="checkbox" name="interets[]" value="Une école publique de qualité pour lutter contre les déterminismes sociaux" /> Une école publique de qualité pour lutter contre les déterminismes sociaux</label>
-          <label><input type="checkbox" name="interets[]" value="Des services publics qui prennent soin de chacune et chacun" /> Des services publics qui prennent soin de chacune et chacun</label>
-          <label><input type="checkbox" name="interets[]" value="La transformation écologique pour une ville vivable et désirable" /> La transformation écologique pour une ville vivable et désirable</label>
-          <label><input type="checkbox" name="interets[]" value="Une ville apaisée pour une meilleure qualité de vie au quotidien" /> Une ville apaisée pour une meilleure qualité de vie au quotidien</label>
-          <label><input type="checkbox" name="interets[]" value="La culture, levier d’émancipation et de partage" /> La culture, levier d’émancipation et de partage</label>
-          <label><input type="checkbox" name="interets[]" value="Une capitale ouverte sur sa métropole, motrice de l’intérêt général" /> Une capitale ouverte sur sa métropole, motrice de l’intérêt général</label>
-          <label><input type="checkbox" name="interets[]" value="Une ville du soin et de la solidarité" /> Une ville du soin et de la solidarité</label>
-          <label><input type="checkbox" name="interets[]" value="Redonner du souffle au débat démocratique" /> Redonner du souffle au débat démocratique</label>
-          <label><input type="checkbox" name="interets[]" value="Paris, capitale de l’égalité et de la lutte contre toutes les discriminations" /> Paris, capitale de l’égalité et de la lutte contre toutes les discriminations</label>
-        </fieldset>
+        <div class="section">
+          <h2 class="section-title">CENTRES D’INTÉRÊT LIÉS AU PROGRAMME DE « PARIS EN GRAND »</h2>
+          <label class="stack"><input type="checkbox" name="interets[]" value="Le logement comme garantie du droit à bien vivre à Paris" /> Le logement comme garantie du droit à bien vivre à Paris</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="Une école publique de qualité pour lutter contre les déterminismes sociaux" /> Une école publique de qualité pour lutter contre les déterminismes sociaux</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="Des services publics qui prennent soin de chacune et chacun" /> Des services publics qui prennent soin de chacune et chacun</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="La transformation écologique pour une ville vivable et désirable" /> La transformation écologique pour une ville vivable et désirable</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="Une ville apaisée pour une meilleure qualité de vie au quotidien" /> Une ville apaisée pour une meilleure qualité de vie au quotidien</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="La culture, levier d’émancipation et de partage" /> La culture, levier d’émancipation et de partage</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="Une capitale ouverte sur sa métropole, motrice de l’intérêt général" /> Une capitale ouverte sur sa métropole, motrice de l’intérêt général</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="Une ville du soin et de la solidarité" /> Une ville du soin et de la solidarité</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="Redonner du souffle au débat démocratique" /> Redonner du souffle au débat démocratique</label>
+          <label class="stack"><input type="checkbox" name="interets[]" value="Paris, capitale de l’égalité et de la lutte contre toutes les discriminations" /> Paris, capitale de l’égalité et de la lutte contre toutes les discriminations</label>
+        </div>
 
-        <textarea name="commentaire" placeholder="Autres centres d’intérêts ou commentaires…" rows="4"></textarea>
+        <div class="section">
+          <h2 class="section-title">CASE TEXTE LIBRE</h2>
+          <textarea name="commentaire" placeholder="Autres centres d’intérêts ou commentaires…" rows="4"></textarea>
+        </div>
 
         <button type="submit" id="submitBtn">Envoyer</button>
       </div>
     </form>
+
+    <div id="remerciementFinal" class="merci" hidden>
+      <p><strong>Merci d’avoir pris le temps de répondre à ce questionnaire pour la campagne de « Paris en Grand » Emmanuel Grégoire pour Paris et Isabelle Rocca pour le 12e. Un mail récapitulant les informations collectées vous a été envoyé automatiquement, vérifiez dans vos spam si vous ne le voyez pas.</strong></p>
+      <p class="note">Vous pouvez faire supprimer vos données personnelles sur simple demande à l’adresse <a href="mailto:contact@ps12.net">contact@ps12.net</a>.</p>
+    </div>
   </div>
 
   <script src="script.js" defer></script>

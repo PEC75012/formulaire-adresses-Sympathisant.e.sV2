@@ -1,22 +1,15 @@
 (function () {
-  // ← Remplace ici si tu redéploies l’Apps Script et que l’URL change
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyh7ibo_mq5oCEZnkNHQduVfkTJPBaE1PDsGG8Sn6rOSdrpr61uPtUMdVTtk-iwbFl2/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbg3ZFpuJIfYjA9xE8C5w36xwuEgVx0Wg0VhaoLg4e2Zsdxulz3HU0UNaUfu_giNiJ/exec";
 
-  const $ = (s) => document.querySelector(s);
+  const $  = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
   const state = { adresses: [] };
 
-  // ------- Auto-complétion d'adresses (adresses.json au même niveau que index.html)
+  // ---------- ADRESSES (autocomplete)
   fetch('adresses.json', { cache: 'no-cache' })
     .then(r => r.json())
-    .then(list => {
-      if (Array.isArray(list)) {
-        state.adresses = list;
-        console.log(`[PS12] ${list.length} adresses chargées`);
-      }
-    })
-    .catch(err => console.warn('[PS12] Échec chargement adresses.json', err));
+    .then(list => { if (Array.isArray(list)) state.adresses = list; });
 
   const input = $('#adresse');
   const box = $('#suggestions');
@@ -37,44 +30,47 @@
   input?.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();
     if (q.length < 2) { box.style.display = 'none'; return; }
-    const results = state.adresses.filter(a => a.toLowerCase().includes(q));
-    showSuggestions(results);
+    showSuggestions(state.adresses.filter(a => a.toLowerCase().includes(q)));
   });
 
-  // ------- Afficher/masquer la suite du formulaire selon Oui/Non
+  // ---------- Afficher la suite si "Oui"
   $$('input[name="accepte_info"]').forEach(r => {
     r.addEventListener('change', function () {
       const suite = $('#suiteForm');
       const msg = $('#messageConfirmation');
-      const submitBtn = $('#submitBtn');
       if (this.value === 'Oui') {
-        suite.hidden = false;
-        msg.textContent = '';
-        if (submitBtn) submitBtn.style.display = 'inline-block';
+        suite.hidden = false; msg.textContent = '';
         $('#date_contact').value = new Date().toLocaleString('fr-FR');
       } else {
         suite.hidden = true;
         msg.textContent = "Nous vous remercions de votre collaboration, à bientôt peut-être !";
-        if (submitBtn) submitBtn.style.display = 'none';
       }
     });
   });
 
-  // ------- Lieu → champ précision (Marché, Métro, École, Supermarché, Autre)
+  // ---------- Lieu : placeholder contextuel + affichage précision
+  const placeholders = {
+    'Marché':       "Indiquez le nom du marché…",
+    'Métro':        "Indiquez la station de métro la plus proche…",
+    'École':        "Indiquez le nom de l’établissement scolaire le plus proche…",
+    'Supermarché':  "Indiquez le nom du supermarché…",
+    'Autre':        "Précisez le lieu…"
+  };
   $('#lieu_contact')?.addEventListener('change', function () {
-    const doitMontrer = ['Autre', 'Marché', 'Métro', 'École', 'Supermarché'].includes(this.value);
-    $('#lieu_precis_container').hidden = !doitMontrer;
+    const v = this.value;
+    const show = ['Marché','Métro','École','Supermarché','Autre'].includes(v);
+    $('#lieu_precis_container').hidden = !show;
+    if (show) $('#lieu_precis').placeholder = placeholders[v] || "Précisez le lieu…";
   });
 
-  // ------- Compétence conditionnelle
+  // ---------- Compétence conditionnelle
   $('#cb_competence')?.addEventListener('change', e => {
     $('#competence_container').hidden = !e.target.checked;
   });
 
-  // ------- Domaines : afficher le textarea de détail quand la case est cochée
+  // ---------- Domaines: détail si coché
   $$('.cb-domaine').forEach(cb => {
-    const targetSel = cb.getAttribute('data-target');
-    const target = targetSel ? document.querySelector(targetSel) : null;
+    const target = document.querySelector(cb.getAttribute('data-target'));
     cb.addEventListener('change', () => {
       if (!target) return;
       target.hidden = !cb.checked;
@@ -82,33 +78,31 @@
     });
   });
 
-  // ------- Soumission : envoi à Google Sheets (Apps Script)
+  // ---------- Soumission → Apps Script
   $('#psForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
-
     const form = e.currentTarget;
     const fd = new FormData(form);
 
-    // Concaténation Lieu + précision
+    // Lieu + précision concaténés
     const lieu = fd.get('lieu_contact') || '';
     const lieuPrec = (fd.get('lieu_precis') || '').trim();
     const lieuFinal = lieuPrec ? `${lieu} : ${lieuPrec}` : lieu;
 
-    // Listes
     const souhaits = fd.getAll('souhaits[]');
     const interets = fd.getAll('interets[]');
     const quartiers = fd.getAll('quartiers[]');
-    const domaines = fd.getAll('domaines[]');
+    const domaines  = fd.getAll('domaines[]');
 
-    // Détails des domaines (si textarea rempli)
+    // Détails domaines (clé = libellé domaine)
     const domainesDetails = {};
     domaines.forEach(d => {
       const name = 'domaines_detail_' + d;
-      const v = fd.get(name);
-      if (v) domainesDetails[d] = v;
+      const v = (fd.get(name) || '').trim();
+      // On envoie tout, la logique "Oui si vide / sinon détail" est faite côté Apps Script
+      domainesDetails[d] = v;
     });
 
-    // Objet de données conforme aux colonnes attendues côté Apps Script/Sheet
     const data = {
       HORODATAGE: new Date().toLocaleString('fr-FR'),
       'Lieu du contact': lieuFinal,
@@ -119,48 +113,38 @@
       'ADRESSE COMPLETE (Auto-complétion)': fd.get('adresse') || '',
       'Adresse autre': fd.get('adresse_autre') || '',
 
-      // Souhaits (Oui / vide)
       'Participer à des réunions': souhaits.includes('Participer à des réunions') ? 'Oui' : '',
-      'Faire du porte à porte': souhaits.includes('Faire du porte à porte') ? 'Oui' : '',
-      'Distribution de documents': souhaits.includes('Distribution de documents') ? 'Oui' : '',
-      'Boîtage documents': souhaits.includes('Boîtage documents') ? 'Oui' : '',
-      'Apporter une compétence': souhaits.includes('Apporter une compétence') ? 'Oui' : '',
+      'Faire du porte à porte':   souhaits.includes('Faire du porte à porte')   ? 'Oui' : '',
+      'Distribution de documents':souhaits.includes('Distribution de documents')? 'Oui' : '',
+      'Boîtage documents':        souhaits.includes('Boîtage documents')        ? 'Oui' : '',
+      'Apporter une compétence':  souhaits.includes('Apporter une compétence')  ? 'Oui' : '',
       'Compétence (texte)': fd.get('competence_texte') || '',
 
-      // Listes (gardées telles quelles pour le traitement côté Apps Script)
-      'Centres_interet': interets,
-      QUARTIER: quartiers,
-      DOMAINES: domaines,
-      DOMAINES_DETAILS: domainesDetails,
-
+      QUARTIER: quartiers,               // liste, traité et joint côté Apps Script
+      DOMAINES: domaines,                // liste de domaines cochés
+      DOMAINES_DETAILS: domainesDetails, // texte saisi (ou vide)
+      'Centres_interet': interets,       // liste, join côté Apps Script
       Commentaires: fd.get('commentaire') || ''
     };
 
-    // Envoi
     try {
-      const submitBtn = $('#submitBtn');
-      submitBtn && submitBtn.classList.add('loading');
-
+      const submitBtn = $('#submitBtn'); submitBtn && submitBtn.classList.add('loading');
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',            // requis avec Apps Script côté client
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
 
-      // Feedback utilisateur + reset
-      $('#messageConfirmation').textContent = 'Nous vous remercions de votre collaboration, à très vite !';
-      $('#messageConfirmation').style.display = 'block';
-      form.reset();
-      $('#suiteForm').hidden = true;
-      $('#lieu_precis_container').hidden = true;
-      $$('.domain-detail').forEach(t => t.hidden = true);
+      // Affichage du message final et masquage définitif du formulaire
+      $('#psForm').hidden = true;
+      $('#remerciementFinal').hidden = false;
+
     } catch (err) {
       console.error('[PS12] Erreur envoi', err);
-      alert('Désolé, une erreur est survenue lors de l’envoi. Réessayez dans un instant.');
+      alert('Désolé, une erreur est survenue. Réessayez dans un instant.');
     } finally {
-      const submitBtn = $('#submitBtn');
-      submitBtn && submitBtn.classList.remove('loading');
+      const submitBtn = $('#submitBtn'); submitBtn && submitBtn.classList.remove('loading');
     }
   });
 })();
