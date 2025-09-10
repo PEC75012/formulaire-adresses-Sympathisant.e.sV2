@@ -1,88 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Formulaire de contact</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulaire PS12</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="container">
-    <h1>Formulaire de contact</h1>
+  <div class="container">
+    <h1>Formulaire de contact - Section PS12</h1>
 
-    <form id="contact-form" novalidate>
-      <label>
-        Lieu du contact
-        <input type="text" name="Lieu du contact" placeholder="Ex: Marché Daumesnil" />
-      </label>
-
-      <div class="grid-2">
-        <label> PRENOM <input type="text" name="PRENOM" required /></label>
-        <label> NOM <input type="text" name="NOM" required /></label>
-      </div>
-
-      <div class="grid-2">
-        <label> E-MAIL <input type="email" name="E-MAIL" placeholder="nom@example.com" /></label>
-        <label> TELEPHONE <input type="tel" name="TELEPHONE" placeholder="06…" /></label>
-      </div>
-
-      <label> ADRESSE COMPLETE (Auto-complétion)
-        <input type="text" id="autocomplete" name="ADRESSE COMPLETE (Auto-complétion)" placeholder="Saisis ton adresse" autocomplete="off" />
-      </label>
-
-      <label> Adresse autre
-        <input type="text" name="Adresse autre" placeholder="Complément d’adresse si besoin" />
-      </label>
-
-      <label> QUARTIER
-        <select name="QUARTIER">
-          <option value="">— Sélectionner —</option>
-          <option value="Aligre Gare de Lyon">Aligre Gare de Lyon</option>
-          <option value="Jardin de Reuilly">Jardin de Reuilly</option>
-          <option value="Nation Picpus">Nation Picpus</option>
-          <option value="Bel-Air Nord">Bel-Air Nord</option>
-          <option value="Bel-Air Sud">Bel-Air Sud</option>
-          <option value="Vallée de Fécamp">Vallée de Fécamp</option>
-          <option value="Bercy">Bercy</option>
-        </select>
-      </label>
-
+    <form id="psForm">
       <fieldset>
-        <legend>DOMAINES D’ACTIVITÉ / D’ENGAGEMENT</legend>
-        <div class="chips" id="domains">
-          <label class="chip"><input type="checkbox" value="Éducation" data-free="domain_free_education" /> Éducation</label>
-          <input class="free" id="domain_free_education" type="text" placeholder="Préciser (facultatif)" />
-          <label class="chip"><input type="checkbox" value="Solidarité" data-free="domain_free_solidarite" /> Solidarité</label>
-          <input class="free" id="domain_free_solidarite" type="text" placeholder="Préciser (facultatif)" />
-          <label class="chip"><input type="checkbox" value="Environnement" data-free="domain_free_env" /> Environnement</label>
-          <input class="free" id="domain_free_env" type="text" placeholder="Préciser (facultatif)" />
-          <label class="chip"><input type="checkbox" value="Culture" data-free="domain_free_culture" /> Culture</label>
-          <input class="free" id="domain_free_culture" type="text" placeholder="Préciser (facultatif)" />
-          <label class="chip"><input type="checkbox" value="Sport" data-free="domain_free_sport" /> Sport</label>
-          <input class="free" id="domain_free_sport" type="text" placeholder="Préciser (facultatif)" />
-          <label class="chip"><input type="checkbox" value="Autre" data-free="domain_free_other" /> Autre</label>
-          <input class="free" id="domain_free_other" type="text" placeholder="Préciser (facultatif)" />
-        </div>
+        <legend>Souhaitez-vous recevoir les informations de la section PS12 ? *</legend>
+        <label><input type="radio" name="accepte_info" value="Oui" required> Oui</label>
+        <label><input type="radio" name="accepte_info" value="Non"> Non</label>
       </fieldset>
 
-      <label class="toggle">
-        <input type="checkbox" id="skill-toggle" /> Apporter une compétence
-      </label>
-      <label id="skill-detail-wrap" class="hidden">
-        Apporter une compétence - détail
-        <textarea id="skill-detail" placeholder="Décris la compétence que tu souhaites apporter"></textarea>
-      </label>
+      <div id="messageConfirmation" class="confirmation"></div>
 
-      <label> Notes
-        <textarea name="Notes" rows="4" placeholder="Informations complémentaires…"></textarea>
-      </label>
+      <div id="suiteForm" style="display: none;">
+        <input type="text" name="date_contact" id="date_contact" style="display:none;" />
 
-      <button type="submit" id="submit-btn">Envoyer</button>
-      <p id="status" role="status" aria-live="polite"></p>
+        <label for="lieu_contact">Lieu du contact *</label>
+        <select id="lieu_contact" name="lieu_contact" required>
+          <option value="">-- Choisir --</option>
+          <option value="Marché">Marché</option>
+          <option value="Métro">Métro</option>
+          <option value="École">École</option>
+          <option value="Supermarché">Supermarché</option>
+          <option value="Autre">Autre (à préciser)</option>
+        </select>
+
+        <div id="lieu_autre_container" style="display:none;">
+          <input type="text" name="lieu_autre" id="lieu_autre" placeholder="Précisez le lieu..." />
+        </div>
+
+        <input type="text" name="prenom" placeholder="Prénom *" required />
+        <input type="text" name="nom" placeholder="Nom *" required />
+        <input type="email" name="email" placeholder="Email *" required />
+        <input type="tel" name="telephone" placeholder="Téléphone *" required />
+
+        <div class="autocomplete-wrapper">
+          <input type="text" name="adresse" id="adresse" placeholder="Adresse complète (auto-complétion)" required />
+          <div id="suggestions" class="suggestions"></div>
+        </div>
+
+        <input type="text" name="adresse_autre" placeholder="Complément d'adresse (optionnel)" />
+
+        <fieldset>
+          <legend>Je souhaite :</legend>
+          <label><input type="checkbox" name="souhaits[]" value="Participer à des réunions" /> Participer à des réunions</label>
+          <label><input type="checkbox" name="souhaits[]" value="Faire du porte à porte" /> Faire du porte à porte</label>
+          <label><input type="checkbox" name="souhaits[]" value="Distribution documents" /> Distribution de documents</label>
+          <label><input type="checkbox" name="souhaits[]" value="Boitage documents" /> Boîtage documents</label>
+          <label><input type="checkbox" name="souhaits[]" value="Apporter une compétence" /> Apporter une compétence</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Je suis intéressé·e par :</legend>
+          <label><input type="checkbox" name="interets[]" value="Le logement comme garantie du droit à bien vivre à Paris" /> Le logement comme garantie du droit à bien vivre à Paris</label>
+          <label><input type="checkbox" name="interets[]" value="Une école publique de qualité pour lutter contre les déterminismes sociaux" /> Une école publique de qualité pour lutter contre les déterminismes sociaux</label>
+          <label><input type="checkbox" name="interets[]" value="Des services publics qui prennent soin de chacune et chacun" /> Des services publics qui prennent soin de chacune et chacun</label>
+          <label><input type="checkbox" name="interets[]" value="La transformation écologique pour une ville vivable et désirable" /> La transformation écologique pour une ville vivable et désirable</label>
+          <label><input type="checkbox" name="interets[]" value="Une ville apaisée pour une meilleure qualité de vie au quotidien" /> Une ville apaisée pour une meilleure qualité de vie au quotidien</label>
+          <label><input type="checkbox" name="interets[]" value="La culture, levier d’émancipation et de partage" /> La culture, levier d’émancipation et de partage</label>
+          <label><input type="checkbox" name="interets[]" value="Une capitale ouverte sur sa métropole, motrice de l’intérêt général" /> Une capitale ouverte sur sa métropole, motrice de l’intérêt général</label>
+          <label><input type="checkbox" name="interets[]" value="Une ville du soin et de la solidarité" /> Une ville du soin et de la solidarité</label>
+          <label><input type="checkbox" name="interets[]" value="Redonner du souffle au débat démocratique" /> Redonner du souffle au débat démocratique</label>
+          <label><input type="checkbox" name="interets[]" value="Paris, capitale de l’égalité et de la lutte contre toutes les discriminations" /> Paris, capitale de l’égalité et de la lutte contre toutes les discriminations</label>
+        </fieldset>
+
+        <textarea name="commentaire" placeholder="Autre centres d’intérêt ou commentaires..." rows="4"></textarea>
+
+        <button type="submit">Envoyer</button>
+      </div>
     </form>
-  </main>
+  </div>
 
   <script src="script.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATy7UvRGmzdy9YbxCPa3ssONCM7R9myMY&libraries=places&callback=initPlaces"></script>
 </body>
 </html>
